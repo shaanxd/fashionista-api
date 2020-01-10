@@ -32,3 +32,6 @@ build/
 
 ### Application properties ###
 /src/main/resources/application.properties
+
+### Uploads location ###
+/uploads
