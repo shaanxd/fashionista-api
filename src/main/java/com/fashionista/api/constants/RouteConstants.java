@@ -13,4 +13,9 @@ public class RouteConstants {
     public static final String PRODUCTS_GET = "";
     public static final String PRODUCT_GET = "/product/{id}";
     public static final String PRODUCT_IMAGE_GET = "/image/{filename}";
+
+    public static final String CART_ROOT = "/api/cart";
+    public static final String CART_GET = "";
+    public static final String CART_ADD_PRODUCT = "/add-product";
+    public static final String CART_DELETE_CART = "/delete-cart/{id}";
 }

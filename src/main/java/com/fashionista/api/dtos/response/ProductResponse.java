@@ -20,7 +20,7 @@ public class ProductResponse {
     private List<String> images = new ArrayList<>();
     private List<TagResponse> tags = new ArrayList<>();
 
-    ProductResponse(String id, String name, String description, int stock, double price, String thumbnail) {
+    private ProductResponse(String id, String name, String description, int stock, double price, String thumbnail) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -44,7 +44,18 @@ public class ProductResponse {
         }
     }
 
-    public static ProductResponse transformToDto(Product product) {
+    static ProductResponse transformWithoutAll(Product product) {
+        return new ProductResponse(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getStock(),
+                product.getPrice(),
+                product.getThumbnail()
+        );
+    }
+
+    public static ProductResponse transformWithAll(Product product) {
         return new ProductResponse(
                 product.getId(),
                 product.getName(),

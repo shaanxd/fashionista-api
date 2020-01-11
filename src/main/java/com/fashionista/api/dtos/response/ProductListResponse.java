@@ -18,16 +18,7 @@ public class ProductListResponse {
         this.total = (total == 0) ? total : total - 1;
         this.current = current;
         for (Product product : products) {
-            this.products.add(
-                    new ProductResponse(
-                            product.getId(),
-                            product.getName(),
-                            product.getDescription(),
-                            product.getStock(),
-                            product.getPrice(),
-                            product.getThumbnail()
-                    )
-            );
+            this.products.add(ProductResponse.transformWithoutAll(product));
         }
     }
 }

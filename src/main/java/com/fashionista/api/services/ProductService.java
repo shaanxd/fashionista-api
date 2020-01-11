@@ -60,7 +60,7 @@ public class ProductService {
         entityManager.clear();
 
         Product responseProduct = productRepository.findById(savedProduct.getId()).orElse(savedProduct);
-        return ResponseEntity.ok(ProductResponse.transformToDto(responseProduct));
+        return ResponseEntity.ok(ProductResponse.transformWithAll(responseProduct));
     }
 
     public ResponseEntity<?> getProduct(String id) {
@@ -68,7 +68,7 @@ public class ProductService {
         if (product == null) {
             throw new GenericException("Product not found.", HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok(ProductResponse.transformToDto(product));
+        return ResponseEntity.ok(ProductResponse.transformWithAll(product));
     }
 
     public ResponseEntity<?> getProducts(Pageable pageable) {
