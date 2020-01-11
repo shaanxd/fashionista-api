@@ -26,6 +26,8 @@ public class CartService {
     }
 
     public ResponseEntity<?> createCart(String productId, Cart cart, User user) {
+        int productQuantity = cart.getQuantity();
+        boolean itemAlreadyExists = false;
         if (user == null) {
             throw new GenericException("User not found.", HttpStatus.UNAUTHORIZED);
         }
@@ -33,12 +35,25 @@ public class CartService {
         if (product == null) {
             throw new GenericException("Product not found", HttpStatus.BAD_REQUEST);
         }
+        List<Cart> availableItems = cartRepository.findByUserAndProduct(user, product);
+        if (availableItems.size() > 0) {
+            for (Cart availableItem : availableItems) {
+                if (cart.getSize().equals(availableItem.getSize())) {
+                    cart = availableItem;
+                    cart.setQuantity(cart.getQuantity() + productQuantity);
+                    itemAlreadyExists = true;
+                    break;
+                }
+            }
+        }
         if (product.getStock() < cart.getQuantity()) {
             throw new GenericException("Product only has " + product.getStock() + " pieces available.", HttpStatus.BAD_REQUEST);
         }
         cart.setTotalPrice(product.getPrice() * cart.getQuantity());
-        cart.setProduct(product);
-        cart.setUser(user);
+        if (!itemAlreadyExists) {
+            cart.setProduct(product);
+            cart.setUser(user);
+        }
         cartRepository.save(cart);
 
         List<Cart> userCart = cartRepository.findByUser(user);
