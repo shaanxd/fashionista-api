@@ -20,6 +20,17 @@ public class ProductResponse {
     private List<String> images = new ArrayList<>();
     private List<TagResponse> tags = new ArrayList<>();
 
+    ProductResponse(String id, String name, String description, int stock, double price, String thumbnail) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.stock = stock;
+        this.price = price;
+        this.thumbnail = thumbnail;
+        this.images = null;
+        this.tags = null;
+    }
+
     private ProductResponse(String id, String name, String description, int stock, double price, String thumbnail, List<String> images, List<ProductTag> productTags) {
         this.id = id;
         this.name = name;

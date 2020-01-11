@@ -8,4 +8,8 @@ public class RouteConstants {
     public static final String AUTH_ROOT = "/api/auth";
     public static final String AUTH_LOGIN = "/login";
     public static final String AUTH_REGISTER = "/register";
+
+    public static final String PRODUCT_ROOT = "/api/products";
+    public static final String PRODUCTS_GET = "";
+    public static final String PRODUCT_GET = "/product/{id}";
 }

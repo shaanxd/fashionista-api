@@ -67,7 +67,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/**/*.jpg",
                         AUTH_ROOT.concat(AUTH_REGISTER),
-                        AUTH_ROOT.concat(AUTH_LOGIN)
+                        AUTH_ROOT.concat(AUTH_LOGIN),
+                        PRODUCT_ROOT.concat(PRODUCTS_GET),
+                        PRODUCT_ROOT.concat(PRODUCT_GET)
                 )
                 .permitAll()
                 .anyRequest()

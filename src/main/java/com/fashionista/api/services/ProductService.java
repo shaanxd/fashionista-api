@@ -1,5 +1,6 @@
 package com.fashionista.api.services;
 
+import com.fashionista.api.dtos.response.ProductListResponse;
 import com.fashionista.api.dtos.response.ProductResponse;
 import com.fashionista.api.entities.Product;
 import com.fashionista.api.entities.ProductTag;
@@ -8,6 +9,8 @@ import com.fashionista.api.repositories.ProductRepository;
 import com.fashionista.api.repositories.ProductTagRepository;
 import com.fashionista.api.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -58,5 +61,18 @@ public class ProductService {
 
         Product responseProduct = productRepository.findById(savedProduct.getId()).orElse(savedProduct);
         return ResponseEntity.ok(ProductResponse.transformToDto(responseProduct));
+    }
+
+    public ResponseEntity<?> getProduct(String id) {
+        Product product = productRepository.findById(id).orElse(null);
+        if (product == null) {
+            throw new GenericException("Product not found.", HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(ProductResponse.transformToDto(product));
+    }
+
+    public ResponseEntity<?> getProducts(Pageable pageable) {
+        Page<Product> products = productRepository.findAll(pageable);
+        return ResponseEntity.ok(new ProductListResponse(products.getTotalPages(), products.getNumber(), products.getContent()));
     }
 }
