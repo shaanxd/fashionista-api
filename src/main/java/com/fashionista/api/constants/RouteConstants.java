@@ -12,4 +12,5 @@ public class RouteConstants {
     public static final String PRODUCT_ROOT = "/api/products";
     public static final String PRODUCTS_GET = "";
     public static final String PRODUCT_GET = "/product/{id}";
+    public static final String PRODUCT_IMAGE_GET = "/image/{filename}";
 }
