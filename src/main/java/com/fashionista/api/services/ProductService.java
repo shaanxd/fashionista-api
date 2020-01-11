@@ -1,5 +1,6 @@
 package com.fashionista.api.services;
 
+import com.fashionista.api.dtos.response.ProductResponse;
 import com.fashionista.api.entities.Product;
 import com.fashionista.api.entities.ProductTag;
 import com.fashionista.api.exceptions.GenericException;
@@ -55,6 +56,7 @@ public class ProductService {
         entityManager.flush();
         entityManager.clear();
 
-        return ResponseEntity.ok(productRepository.findById(savedProduct.getId()));
+        Product responseProduct = productRepository.findById(savedProduct.getId()).orElse(savedProduct);
+        return ResponseEntity.ok(ProductResponse.transformToDto(responseProduct));
     }
 }
