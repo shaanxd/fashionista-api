@@ -59,4 +59,21 @@ public class CartService {
         List<Cart> userCart = cartRepository.findByUser(user);
         return ResponseEntity.ok(new CartResponse(userCart));
     }
+
+    public ResponseEntity<?> getUserCart(User user) {
+        if (user == null) {
+            throw new GenericException("User not found", HttpStatus.UNAUTHORIZED);
+        }
+        return ResponseEntity.ok(new CartResponse(cartRepository.findByUser(user)));
+    }
+
+    public ResponseEntity<?> deleteCartItem(String id, User user) {
+        if (user == null) {
+            throw new GenericException("User not found.", HttpStatus.UNAUTHORIZED);
+        }
+        Cart cart = cartRepository.findById(id).orElseThrow(() -> new GenericException("Cart item not found", HttpStatus.BAD_REQUEST));
+        cartRepository.delete(cart);
+
+        return ResponseEntity.ok(new CartResponse(cartRepository.findByUser(user)));
+    }
 }

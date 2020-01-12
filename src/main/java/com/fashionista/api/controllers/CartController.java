@@ -26,8 +26,8 @@ public class CartController {
     }
 
     @GetMapping(CART_GET)
-    public ResponseEntity<?> getCart() {
-        return null;
+    public ResponseEntity<?> getCart(Authentication authentication) {
+        return cartService.getUserCart(validationService.validateUser(authentication));
     }
 
     @PostMapping(CART_ADD_PRODUCT)
@@ -39,7 +39,7 @@ public class CartController {
     }
 
     @PostMapping(CART_DELETE_CART)
-    public ResponseEntity<?> deleteProduct(@PathVariable String id) {
-        return null;
+    public ResponseEntity<?> deleteProduct(@PathVariable String id, Authentication authentication) {
+        return cartService.deleteCartItem(id, validationService.validateUser(authentication));
     }
 }
