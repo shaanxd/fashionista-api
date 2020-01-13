@@ -21,4 +21,6 @@ public class RouteConstants {
 
     public static final String PURCHASES_ROOT = "/api/purchases";
     public static final String PURCHASE_CART = "/purchase-cart";
+    public static final String PURCHASES_GET = "";
+    public static final String PURCHASE_GET = "/purchase/{id}";
 }

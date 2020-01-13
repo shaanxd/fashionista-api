@@ -1,6 +1,7 @@
 package com.fashionista.api.dtos.response;
 
 import com.fashionista.api.entities.Cart;
+import com.fashionista.api.entities.PurchaseItem;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,18 @@ class CartItemResponse {
                 cart.getQuantity(),
                 cart.getTotalPrice(),
                 cart.getSize(),
+                productResponse
+        );
+    }
+
+    static CartItemResponse transformToDto(PurchaseItem purchase) {
+        ProductResponse productResponse = ProductResponse.transformWithoutAll(purchase.getProduct());
+
+        return new CartItemResponse(
+                purchase.getId(),
+                purchase.getQuantity(),
+                purchase.getTotalPrice(),
+                purchase.getSize(),
                 productResponse
         );
     }
