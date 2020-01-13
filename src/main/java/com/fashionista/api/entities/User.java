@@ -50,6 +50,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Cart> cart = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Purchase> purchases = new ArrayList<>();
+
     @CreationTimestamp
     @JsonIgnore
     private Date createdAt;
