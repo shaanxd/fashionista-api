@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -67,7 +68,8 @@ public class ProductService {
         entityManager.clear();
 
         Product responseProduct = productRepository.findById(savedProduct.getId()).orElse(savedProduct);
-        return ResponseEntity.ok(ProductResponse.transformWithAll(responseProduct));
+        ReviewListResponse reviewListResponse = new ReviewListResponse(0, 0, Collections.emptyList());
+        return ResponseEntity.ok(ProductResponse.transformWithAll(responseProduct, reviewListResponse));
     }
 
     public ResponseEntity<?> getProduct(String id) {
@@ -75,7 +77,11 @@ public class ProductService {
         if (product == null) {
             throw new GenericException("Product not found.", HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok(ProductResponse.transformWithAll(product));
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<Review> reviews = reviewRepository.findByProduct(product, pageable);
+        return ResponseEntity.ok(ProductResponse.transformWithAll(product,
+                new ReviewListResponse(reviews.getTotalPages(), reviews.getNumber(), reviews.getContent())
+        ));
     }
 
     public ResponseEntity<?> getProducts(Pageable pageable) {
@@ -83,6 +89,7 @@ public class ProductService {
         return ResponseEntity.ok(new ProductListResponse(products.getTotalPages(), products.getNumber(), products.getContent()));
     }
 
+    @Transactional
     public ResponseEntity<?> addReview(String id, Review updatedReview, User user) {
         if (user == null) {
             throw new GenericException("User not found.", HttpStatus.UNAUTHORIZED);
@@ -102,8 +109,14 @@ public class ProductService {
 
         reviewRepository.save(review);
 
+        entityManager.flush();
+        entityManager.refresh(product);
+
         Page<Review> reviews = reviewRepository.findByProduct(product, PageRequest.of(0, 5));
-        return ResponseEntity.ok(new ReviewListResponse(reviews.getTotalPages(), reviews.getNumber(), reviews.getContent()));
+
+        return ResponseEntity.ok(ProductResponse.transformWithAll(product,
+                new ReviewListResponse(reviews.getTotalPages(), reviews.getNumber(), reviews.getContent())
+        ));
     }
 
     public ResponseEntity<?> getProductReviews(String id, Pageable pageable) {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.util.StringUtils;
@@ -27,7 +28,10 @@ public class Product {
     private String thumbnail;
     private String images;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @Formula("(SELECT AVG(r.rating) FROM Review r WHERE id = r.product_id)")
+    private double avgRating = 0.0;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ProductTag> productTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
