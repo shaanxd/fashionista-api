@@ -58,7 +58,14 @@ public class PurchaseService {
         purchase.setTotalPrice(total);
         purchase.setItems(purchases);
 
-        return ResponseEntity.ok(new PurchaseResponse(purchase.getId(), purchase.getTotalPrice(), purchase.getItems().size()));
+        return ResponseEntity.ok(
+                new PurchaseResponse(
+                        purchase.getId(),
+                        purchase.getTotalPrice(),
+                        purchase.getItems().size(),
+                        purchase.getUpdatedAt()
+                )
+        );
     }
 
     public ResponseEntity<?> getOrders(User user, Pageable pageable) {
@@ -77,6 +84,14 @@ public class PurchaseService {
         if (!purchase.getUser().getId().equals(user.getId())) {
             throw new GenericException("Requested purchase doesn't belong to authenticated user.", HttpStatus.FORBIDDEN);
         }
-        return ResponseEntity.ok(new PurchaseResponse(purchase.getId(), purchase.getTotalPrice(), purchase.getItems().size(), purchase.getItems()));
+        return ResponseEntity.ok(
+                new PurchaseResponse(
+                        purchase.getId(),
+                        purchase.getTotalPrice(),
+                        purchase.getItems().size(),
+                        purchase.getUpdatedAt(),
+                        purchase.getItems()
+                )
+        );
     }
 }

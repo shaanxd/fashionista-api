@@ -20,7 +20,15 @@ public class PurchaseListResponse {
         this.current = current;
         for (Purchase purchase : purchases) {
             List<PurchaseItem> purchaseItems = purchase.getItems();
-            this.purchases.add(new PurchaseResponse(purchase.getId(), purchase.getTotalPrice(), purchaseItems.size(), purchaseItems));
+            this.purchases.add(
+                    new PurchaseResponse(
+                            purchase.getId(),
+                            purchase.getTotalPrice(),
+                            purchaseItems.size(),
+                            purchase.getUpdatedAt(),
+                            purchaseItems
+                    )
+            );
         }
     }
 }

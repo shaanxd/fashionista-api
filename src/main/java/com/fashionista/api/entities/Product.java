@@ -34,6 +34,10 @@ public class Product {
     @JsonIgnore
     private List<Cart> cart = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<PurchaseItem> purchaseItems = new ArrayList<>();
+
     @CreationTimestamp
     @JsonIgnore
     private Date createdAt;

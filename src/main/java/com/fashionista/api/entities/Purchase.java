@@ -3,10 +3,13 @@ package com.fashionista.api.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -28,6 +31,14 @@ public class Purchase {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "purchase", cascade = CascadeType.ALL)
     private List<PurchaseItem> items = new ArrayList<>();
+
+    @CreationTimestamp
+    @JsonIgnore
+    private Date createdAt;
+
+    @UpdateTimestamp
+    @JsonIgnore
+    private Date updatedAt;
 
     public Purchase(double totalPrice, User user) {
         this.totalPrice = totalPrice;
