@@ -38,6 +38,10 @@ public class Product {
     @JsonIgnore
     private List<PurchaseItem> purchaseItems = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Review> reviews = new ArrayList<>();
+
     @CreationTimestamp
     @JsonIgnore
     private Date createdAt;

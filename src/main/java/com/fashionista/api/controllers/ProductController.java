@@ -1,16 +1,18 @@
 package com.fashionista.api.controllers;
 
+import com.fashionista.api.entities.Review;
 import com.fashionista.api.services.FileStorageService;
 import com.fashionista.api.services.ProductService;
+import com.fashionista.api.services.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import static com.fashionista.api.constants.RouteConstants.*;
 
@@ -19,11 +21,13 @@ import static com.fashionista.api.constants.RouteConstants.*;
 public class ProductController {
     private ProductService productService;
     private FileStorageService fileStorageService;
+    private ValidationService validationService;
 
     @Autowired
-    public ProductController(ProductService productService, FileStorageService fileStorageService) {
+    public ProductController(ProductService productService, FileStorageService fileStorageService, ValidationService validationService) {
         this.productService = productService;
         this.fileStorageService = fileStorageService;
+        this.validationService = validationService;
     }
 
     @GetMapping(PRODUCT_GET)
@@ -39,6 +43,19 @@ public class ProductController {
     @GetMapping(PRODUCT_IMAGE_GET)
     public ResponseEntity<?> getImage(@PathVariable String filename, HttpServletRequest request) {
         return fileStorageService.getImage(filename, request);
+    }
+
+    @PostMapping(PRODUCT_ADD_REVIEW)
+    public ResponseEntity<?> addReview(@PathVariable String id, @Valid @RequestBody Review review, BindingResult result, Authentication authentication) {
+        if (result.hasErrors()) {
+            return validationService.validate(result);
+        }
+        return productService.addReview(id, review, validationService.validateUser(authentication));
+    }
+
+    @GetMapping(PRODUCT_GET_REVIEWS)
+    public ResponseEntity<?> getReviews(@PathVariable String id, Pageable pageable) {
+        return productService.getProductReviews(id, pageable);
     }
 
 }

@@ -4,12 +4,16 @@ import com.fashionista.api.dtos.response.ProductListResponse;
 import com.fashionista.api.dtos.response.ProductResponse;
 import com.fashionista.api.entities.Product;
 import com.fashionista.api.entities.ProductTag;
+import com.fashionista.api.entities.Review;
+import com.fashionista.api.entities.User;
 import com.fashionista.api.exceptions.GenericException;
 import com.fashionista.api.repositories.ProductRepository;
 import com.fashionista.api.repositories.ProductTagRepository;
+import com.fashionista.api.repositories.ReviewRepository;
 import com.fashionista.api.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,14 +32,16 @@ public class ProductService {
     private TagRepository tagRepository;
     private ProductTagRepository productTagRepository;
     private EntityManager entityManager;
+    private ReviewRepository reviewRepository;
 
     @Autowired
-    public ProductService(FileStorageService fileStorageService, ProductRepository productRepository, TagRepository tagRepository, ProductTagRepository productTagRepository, EntityManager entityManager) {
+    public ProductService(FileStorageService fileStorageService, ProductRepository productRepository, TagRepository tagRepository, ProductTagRepository productTagRepository, EntityManager entityManager, ReviewRepository reviewRepository) {
         this.fileStorageService = fileStorageService;
         this.productRepository = productRepository;
         this.tagRepository = tagRepository;
         this.productTagRepository = productTagRepository;
         this.entityManager = entityManager;
+        this.reviewRepository = reviewRepository;
     }
 
     @Transactional
@@ -74,5 +80,33 @@ public class ProductService {
     public ResponseEntity<?> getProducts(Pageable pageable) {
         Page<Product> products = productRepository.findAll(pageable);
         return ResponseEntity.ok(new ProductListResponse(products.getTotalPages(), products.getNumber(), products.getContent()));
+    }
+
+    public ResponseEntity<?> addReview(String id, Review updatedReview, User user) {
+        if (user == null) {
+            throw new GenericException("User not found.", HttpStatus.UNAUTHORIZED);
+        }
+        Product product = productRepository.findById(id).orElseThrow(() -> new GenericException("Product not found.", HttpStatus.NOT_FOUND));
+        Review review = reviewRepository.findByProductAndUser(product, user);
+        if (review == null) {
+            review = updatedReview;
+            review.setProduct(product);
+            review.setUser(user);
+        } else {
+            review.setTitle(updatedReview.getTitle());
+            review.setDescription(updatedReview.getDescription());
+            review.setRating(updatedReview.getRating());
+        }
+        reviewRepository.save(review);
+        Page<Review> reviews = reviewRepository.findByProduct(product, PageRequest.of(0, 5));
+        return ResponseEntity.ok(reviews);
+    }
+
+    public ResponseEntity<?> getProductReviews(String id, Pageable pageable) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new GenericException("Product not found.", HttpStatus.NOT_FOUND));
+
+        Page<Review> reviews = reviewRepository.findByProduct(product, pageable);
+
+        return ResponseEntity.ok(reviews);
     }
 }
