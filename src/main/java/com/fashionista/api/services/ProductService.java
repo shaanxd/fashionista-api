@@ -2,6 +2,7 @@ package com.fashionista.api.services;
 
 import com.fashionista.api.dtos.response.ProductListResponse;
 import com.fashionista.api.dtos.response.ProductResponse;
+import com.fashionista.api.dtos.response.ReviewListResponse;
 import com.fashionista.api.entities.Product;
 import com.fashionista.api.entities.ProductTag;
 import com.fashionista.api.entities.Review;
@@ -88,6 +89,7 @@ public class ProductService {
         }
         Product product = productRepository.findById(id).orElseThrow(() -> new GenericException("Product not found.", HttpStatus.NOT_FOUND));
         Review review = reviewRepository.findByProductAndUser(product, user);
+
         if (review == null) {
             review = updatedReview;
             review.setProduct(product);
@@ -97,16 +99,16 @@ public class ProductService {
             review.setDescription(updatedReview.getDescription());
             review.setRating(updatedReview.getRating());
         }
+
         reviewRepository.save(review);
+
         Page<Review> reviews = reviewRepository.findByProduct(product, PageRequest.of(0, 5));
-        return ResponseEntity.ok(reviews);
+        return ResponseEntity.ok(new ReviewListResponse(reviews.getTotalPages(), reviews.getNumber(), reviews.getContent()));
     }
 
     public ResponseEntity<?> getProductReviews(String id, Pageable pageable) {
         Product product = productRepository.findById(id).orElseThrow(() -> new GenericException("Product not found.", HttpStatus.NOT_FOUND));
-
         Page<Review> reviews = reviewRepository.findByProduct(product, pageable);
-
-        return ResponseEntity.ok(reviews);
+        return ResponseEntity.ok(new ReviewListResponse(reviews.getTotalPages(), reviews.getNumber(), reviews.getContent()));
     }
 }
