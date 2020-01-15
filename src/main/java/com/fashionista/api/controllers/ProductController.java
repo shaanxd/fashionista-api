@@ -58,4 +58,9 @@ public class ProductController {
         return productService.getProductReviews(id, pageable);
     }
 
+    @GetMapping(PRODUCTS_SEARCH)
+    public ResponseEntity<?> searchProducts(@PathVariable String name, Pageable pageable) {
+        return productService.getProductsByName(name, pageable);
+    }
+
 }

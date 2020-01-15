@@ -124,4 +124,9 @@ public class ProductService {
         Page<Review> reviews = reviewRepository.findByProduct(product, pageable);
         return ResponseEntity.ok(new ReviewListResponse(reviews.getTotalPages(), reviews.getNumber(), reviews.getContent()));
     }
+
+    public ResponseEntity<?> getProductsByName(String name, Pageable pageable) {
+        Page<Product> products = productRepository.findAllByNameContaining(name, pageable);
+        return ResponseEntity.ok(new ProductListResponse(products.getTotalPages(), products.getNumber(), products.getContent()));
+    }
 }

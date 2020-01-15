@@ -69,7 +69,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         AUTH_ROOT.concat(AUTH_REGISTER),
                         AUTH_ROOT.concat(AUTH_LOGIN),
                         PRODUCT_ROOT.concat(PRODUCTS_GET),
-                        PRODUCT_ROOT.concat(PRODUCT_GET)
+                        PRODUCT_ROOT.concat(PRODUCT_GET),
+                        PRODUCT_ROOT.concat(PRODUCTS_SEARCH),
+                        PRODUCT_ROOT.concat(PRODUCT_GET_REVIEWS)
                 )
                 .permitAll()
                 .anyRequest()
