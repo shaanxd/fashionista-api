@@ -1,7 +1,7 @@
 package com.fashionista.api.controllers;
 
 import com.fashionista.api.dtos.request.ProductRequest;
-import com.fashionista.api.entities.Tag;
+import com.fashionista.api.dtos.request.TagRequest;
 import com.fashionista.api.services.ProductService;
 import com.fashionista.api.services.TagService;
 import com.fashionista.api.services.ValidationService;
@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,11 +33,12 @@ public class AdminController {
     }
 
     @PostMapping(ADMIN_CREATE_TAG)
-    public ResponseEntity<?> createTag(@Valid @RequestBody Tag tag, BindingResult result) {
+    public ResponseEntity<?> createTag(@Valid TagRequest tagRequest, BindingResult result) {
         if (result.hasErrors()) {
             return validationService.validate(result);
         }
-        return tagService.createTag(tag);
+        validationService.validateFile(tagRequest.getImage());
+        return tagService.createTag(tagRequest.transformToEntity(), tagRequest.getImage());
     }
 
     @PostMapping(ADMIN_CREATE_PRODUCT)
