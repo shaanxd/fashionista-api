@@ -26,4 +26,7 @@ public class RouteConstants {
     public static final String PURCHASE_CART = "/purchase-cart";
     public static final String PURCHASES_GET = "";
     public static final String PURCHASE_GET = "/purchase/{id}";
+
+    public static final String TAG_ROOT = "/api/tags";
+    public static final String TAG_SEARCH = "/search-tag/{name}";
 }

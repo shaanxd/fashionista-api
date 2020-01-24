@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface TagRepository extends CrudRepository<Tag, String> {
     long countByIdIn(List<String> ids);
+
+    List<Tag> findAllByNameContaining(String name);
 }

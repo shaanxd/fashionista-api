@@ -18,4 +18,8 @@ public class TagService {
     public ResponseEntity<?> createTag(Tag tag) {
         return ResponseEntity.ok(tagRepository.save(tag));
     }
+
+    public ResponseEntity<?> searchTag(String name) {
+        return ResponseEntity.ok((tagRepository.findAllByNameContaining(name)));
+    }
 }
