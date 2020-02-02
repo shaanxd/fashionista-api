@@ -77,7 +77,7 @@ public class ProductService {
         if (product == null) {
             throw new GenericException("Product not found.", HttpStatus.BAD_REQUEST);
         }
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 3);
         Page<Review> reviews = reviewRepository.findByProduct(product, pageable);
         return ResponseEntity.ok(ProductResponse.transformWithAll(product,
                 new ReviewListResponse(reviews.getTotalPages(), reviews.getNumber(), reviews.getContent())
@@ -112,7 +112,7 @@ public class ProductService {
         entityManager.flush();
         entityManager.refresh(product);
 
-        Page<Review> reviews = reviewRepository.findByProduct(product, PageRequest.of(0, 5));
+        Page<Review> reviews = reviewRepository.findByProduct(product, PageRequest.of(0, 3));
 
         return ResponseEntity.ok(ProductResponse.transformWithAll(product,
                 new ReviewListResponse(reviews.getTotalPages(), reviews.getNumber(), reviews.getContent())

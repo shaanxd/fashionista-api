@@ -15,7 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static com.fashionista.api.constants.AuthConstants.AUTH_ADMIN;
+import static com.fashionista.api.constants.AuthConstants.AUTH_USER;
 import static com.fashionista.api.constants.SecurityConstants.VALID_DURATION;
 
 @Service
@@ -41,7 +41,7 @@ public class AuthenticationService {
         if (foundUser != null) {
             throw new GenericException("Email already exists.", HttpStatus.BAD_REQUEST);
         }
-        user.setRole(AUTH_ADMIN);
+        user.setRole(AUTH_USER);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         User savedUser = userRepository.save(user);

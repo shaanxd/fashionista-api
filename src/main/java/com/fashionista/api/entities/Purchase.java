@@ -34,7 +34,7 @@ public class Purchase {
 
     @CreationTimestamp
     @JsonIgnore
-    private Date createdAt;
+    private Date createdAt = new Date();
 
     @UpdateTimestamp
     @JsonIgnore

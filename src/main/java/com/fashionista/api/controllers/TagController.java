@@ -4,10 +4,7 @@ import com.fashionista.api.services.FileStorageService;
 import com.fashionista.api.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,6 +12,7 @@ import static com.fashionista.api.constants.RouteConstants.*;
 
 @RestController
 @RequestMapping(TAG_ROOT)
+@CrossOrigin("*")
 public class TagController {
     private TagService tagService;
     private FileStorageService fileStorageService;

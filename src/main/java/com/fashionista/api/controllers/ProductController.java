@@ -18,6 +18,7 @@ import static com.fashionista.api.constants.RouteConstants.*;
 
 @RestController
 @RequestMapping(PRODUCT_ROOT)
+@CrossOrigin("*")
 public class ProductController {
     private ProductService productService;
     private FileStorageService fileStorageService;

@@ -29,7 +29,7 @@ public class Review {
     @NotBlank(message = "Review description is required.")
     private String description;
 
-    @DecimalMin(value = "1.0", message = "Rating should be at least 1.0")
+    @DecimalMin(value = "0.5", message = "Rating should be at least 1.0")
     @DecimalMax(value = "5.0", message = "Rating should not exceed 5.0")
     private double rating;
 

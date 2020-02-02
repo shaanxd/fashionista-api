@@ -5,7 +5,6 @@ import com.fashionista.api.dtos.response.PurchaseResponse;
 import com.fashionista.api.entities.*;
 import com.fashionista.api.exceptions.GenericException;
 import com.fashionista.api.repositories.CartRepository;
-import com.fashionista.api.repositories.PurchaseItemRepository;
 import com.fashionista.api.repositories.PurchaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,11 +22,13 @@ import java.util.List;
 public class PurchaseService {
     private PurchaseRepository purchaseRepository;
     private CartRepository cartRepository;
+    private EntityManager entityManager;
 
     @Autowired
-    public PurchaseService(PurchaseRepository purchaseRepository, PurchaseItemRepository purchaseItemRepository, CartRepository cartRepository) {
+    public PurchaseService(PurchaseRepository purchaseRepository, CartRepository cartRepository, EntityManager entityManager) {
         this.purchaseRepository = purchaseRepository;
         this.cartRepository = cartRepository;
+        this.entityManager = entityManager;
     }
 
     @Transactional
@@ -57,6 +59,9 @@ public class PurchaseService {
         }
         purchase.setTotalPrice(total);
         purchase.setItems(purchases);
+
+        entityManager.flush();
+        entityManager.refresh(purchase);
 
         return ResponseEntity.ok(
                 new PurchaseResponse(

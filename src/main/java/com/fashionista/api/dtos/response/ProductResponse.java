@@ -17,12 +17,12 @@ public class ProductResponse {
     private int stock = 0;
     private double price = 0.0;
     private String thumbnail;
-    private double avgRating = 0.0;
+    private Double avgRating = 0.0;
     private List<String> images = new ArrayList<>();
     private List<TagResponse> tags = new ArrayList<>();
     private ReviewListResponse reviews;
 
-    private ProductResponse(String id, String name, String description, int stock, double price, String thumbnail, double avgRating) {
+    private ProductResponse(String id, String name, String description, int stock, double price, String thumbnail, Double avgRating) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -34,7 +34,7 @@ public class ProductResponse {
         this.tags = null;
     }
 
-    private ProductResponse(String id, String name, String description, int stock, double price, String thumbnail, double avgRating, List<String> images, List<ProductTag> productTags, ReviewListResponse reviews) {
+    private ProductResponse(String id, String name, String description, int stock, double price, String thumbnail, Double avgRating, List<String> images, List<ProductTag> productTags, ReviewListResponse reviews) {
         this.id = id;
         this.name = name;
         this.description = description;

@@ -22,6 +22,7 @@ public class Product {
     @Column(name = "id", updatable = false, nullable = false)
     private String id;
     private String name;
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
     private int stock = 0;
     private double price = 0.0;
@@ -29,7 +30,7 @@ public class Product {
     private String images;
 
     @Formula("(SELECT AVG(r.rating) FROM Review r WHERE id = r.product_id)")
-    private double avgRating = 0.0;
+    private Double avgRating = 0.0;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ProductTag> productTags = new ArrayList<>();

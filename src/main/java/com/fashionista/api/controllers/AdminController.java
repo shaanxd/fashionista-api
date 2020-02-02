@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,7 @@ import static com.fashionista.api.constants.RouteConstants.*;
 @RestController
 @RequestMapping(ADMIN_ROOT)
 @PreAuthorize("hasRole('ADMIN')")
+@CrossOrigin("*")
 public class AdminController {
     private TagService tagService;
     private ValidationService validationService;

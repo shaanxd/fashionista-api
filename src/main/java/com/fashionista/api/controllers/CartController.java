@@ -15,6 +15,7 @@ import static com.fashionista.api.constants.RouteConstants.*;
 
 @RestController
 @RequestMapping(CART_ROOT)
+@CrossOrigin("*")
 public class CartController {
     private CartService cartService;
     private ValidationService validationService;
