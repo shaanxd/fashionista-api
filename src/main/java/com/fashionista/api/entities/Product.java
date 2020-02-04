@@ -29,8 +29,26 @@ public class Product {
     private String thumbnail;
     private String images;
 
-    @Formula("(SELECT AVG(r.rating) FROM Review r WHERE id = r.product_id)")
-    private Double avgRating = 0.0;
+    @Formula("(SELECT IFNULL((SELECT AVG(r.rating) FROM Review r WHERE id = r.product_id), 0))")
+    private double avgRating = 0.0;
+
+    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating = 1), 0))")
+    private int oneRating = 0;
+
+    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating = 2), 0))")
+    private int twoRating = 0;
+
+    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating = 3), 0))")
+    private int threeRating = 0;
+
+    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating = 4), 0))")
+    private int fourRating = 0;
+
+    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating = 5), 0))")
+    private int fiveRating = 0;
+
+    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id), 0))")
+    private int totalRating = 0;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ProductTag> productTags = new ArrayList<>();

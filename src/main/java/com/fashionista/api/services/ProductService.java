@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -77,7 +78,7 @@ public class ProductService {
         if (product == null) {
             throw new GenericException("Product not found.", HttpStatus.BAD_REQUEST);
         }
-        Pageable pageable = PageRequest.of(0, 3);
+        Pageable pageable = PageRequest.of(0, 3, Sort.by("updatedAt").descending());
         Page<Review> reviews = reviewRepository.findByProduct(product, pageable);
         return ResponseEntity.ok(ProductResponse.transformWithAll(product,
                 new ReviewListResponse(reviews.getTotalPages(), reviews.getNumber(), reviews.getContent())
