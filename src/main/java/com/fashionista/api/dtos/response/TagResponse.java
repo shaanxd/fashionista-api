@@ -11,10 +11,5 @@ class TagResponse {
     private String id;
     private String name;
     private String type;
-    private String description;
-
-    TagResponse(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    private String image;
 }

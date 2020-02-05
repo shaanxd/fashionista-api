@@ -1,11 +1,15 @@
 package com.fashionista.api.services;
 
+import com.fashionista.api.dtos.response.TagListResponse;
 import com.fashionista.api.entities.Tag;
 import com.fashionista.api.repositories.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 
 @Service
 public class TagService {
@@ -26,5 +30,10 @@ public class TagService {
 
     public ResponseEntity<?> searchTag(String name) {
         return ResponseEntity.ok((tagRepository.findAllByNameContaining(name)));
+    }
+
+    public ResponseEntity<?> getTags(Pageable pageable) {
+        Page<Tag> page = tagRepository.findAll(pageable);
+        return ResponseEntity.ok(new TagListResponse(page.getTotalPages(), page.getNumber(), page.getContent()));
     }
 }

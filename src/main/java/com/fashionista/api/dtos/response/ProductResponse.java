@@ -52,7 +52,10 @@ public class ProductResponse {
         this.avgRating = avgRating;
         this.images = images;
         for (ProductTag productTag : productTags) {
-            this.tags.add(new TagResponse(productTag.getTag().getId(), productTag.getTag().getName()));
+            this.tags.add(new TagResponse(
+                    productTag.getTag().getId(), productTag.getTag().getName(),
+                    productTag.getTag().getType(), productTag.getTag().getImage())
+            );
         }
         this.reviews = reviews;
         this.oneStars = oneStars;

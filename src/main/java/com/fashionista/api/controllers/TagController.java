@@ -3,6 +3,7 @@ package com.fashionista.api.controllers;
 import com.fashionista.api.services.FileStorageService;
 import com.fashionista.api.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,5 +32,10 @@ public class TagController {
     @GetMapping(TAG_IMAGE_GET)
     public ResponseEntity<?> getTagImage(@PathVariable String filename, HttpServletRequest request) {
         return fileStorageService.getImage(filename, request);
+    }
+
+    @GetMapping(TAG_GET)
+    public ResponseEntity<?> getTags(@RequestParam(required = false) String type, Pageable pageable) {
+        return tagService.getTags(pageable);
     }
 }
