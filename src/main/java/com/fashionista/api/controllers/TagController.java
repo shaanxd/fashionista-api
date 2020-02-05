@@ -36,6 +36,6 @@ public class TagController {
 
     @GetMapping(TAG_GET)
     public ResponseEntity<?> getTags(@RequestParam(required = false) String type, Pageable pageable) {
-        return tagService.getTags(pageable);
+        return tagService.getTags(type, pageable);
     }
 }

@@ -32,8 +32,15 @@ public class TagService {
         return ResponseEntity.ok((tagRepository.findAllByNameContaining(name)));
     }
 
-    public ResponseEntity<?> getTags(Pageable pageable) {
-        Page<Tag> page = tagRepository.findAll(pageable);
+    public ResponseEntity<?> getTags(String type, Pageable pageable) {
+        Page<Tag> page;
+
+        if (type != null) {
+            page = tagRepository.findAllByType(type, pageable);
+        } else {
+            page = tagRepository.findAll(pageable);
+        }
+
         return ResponseEntity.ok(new TagListResponse(page.getTotalPages(), page.getNumber(), page.getContent()));
     }
 }
