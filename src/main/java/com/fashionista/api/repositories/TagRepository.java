@@ -15,4 +15,6 @@ public interface TagRepository extends PagingAndSortingRepository<Tag, String> {
     List<Tag> findAllByNameContaining(String name);
 
     Page<Tag> findAllByType(String type, Pageable pageable);
+
+    List<Tag> findAllByType(String type);
 }

@@ -1,5 +1,6 @@
 package com.fashionista.api.services;
 
+import com.fashionista.api.dtos.response.AllTagsResponse;
 import com.fashionista.api.dtos.response.TagListResponse;
 import com.fashionista.api.entities.Tag;
 import com.fashionista.api.repositories.TagRepository;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 
 @Service
@@ -42,5 +45,13 @@ public class TagService {
         }
 
         return ResponseEntity.ok(new TagListResponse(page.getTotalPages(), page.getNumber(), page.getContent()));
+    }
+
+    public ResponseEntity<?> getAllTags() {
+        List<Tag> brands = tagRepository.findAllByType("TAG_BRAND");
+        List<Tag> genders = tagRepository.findAllByType("TAG_GENDER");
+        List<Tag> types = tagRepository.findAllByType("TAG_TYPE");
+
+        return ResponseEntity.ok(new AllTagsResponse(brands, genders, types));
     }
 }

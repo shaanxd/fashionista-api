@@ -38,4 +38,9 @@ public class TagController {
     public ResponseEntity<?> getTags(@RequestParam(required = false) String type, Pageable pageable) {
         return tagService.getTags(type, pageable);
     }
+
+    @GetMapping(TAG_GET_ALL)
+    public ResponseEntity<?> getAllTags() {
+        return tagService.getAllTags();
+    }
 }

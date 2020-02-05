@@ -30,5 +30,6 @@ public class RouteConstants {
     public static final String TAG_ROOT = "/api/tags";
     public static final String TAG_SEARCH = "/search-tag/{name}";
     public static final String TAG_GET = "";
+    public static final String TAG_GET_ALL = "/all";
     public static final String TAG_IMAGE_GET = "/image/{filename}";
 }
