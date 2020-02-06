@@ -16,6 +16,7 @@ public class RouteConstants {
     public static final String PRODUCT_IMAGE_GET = "/image/{filename}";
     public static final String PRODUCT_ADD_REVIEW = "/add-review/{id}";
     public static final String PRODUCT_GET_REVIEWS = "/reviews/{id}";
+    public static final String PRODUCT_GET_BY_TAG = "/by-type";
 
     public static final String CART_ROOT = "/api/cart";
     public static final String CART_GET = "";

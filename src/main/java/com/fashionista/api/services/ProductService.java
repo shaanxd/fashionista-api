@@ -24,9 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ProductService {
@@ -128,6 +126,12 @@ public class ProductService {
 
     public ResponseEntity<?> getProductsByName(String name, Pageable pageable) {
         Page<Product> products = productRepository.findAllByNameContaining(name, pageable);
+        return ResponseEntity.ok(new ProductListResponse(products.getTotalPages(), products.getNumber(), products.getContent()));
+    }
+
+    public ResponseEntity<?> getProductsByTags(List<String> items, Pageable pageable) {
+        Set<String> ids = new HashSet<>(items);
+        Page<Product> products = productTagRepository.getTaggedProducts(ids, pageable, ids.size());
         return ResponseEntity.ok(new ProductListResponse(products.getTotalPages(), products.getNumber(), products.getContent()));
     }
 }

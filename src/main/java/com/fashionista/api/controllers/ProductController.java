@@ -1,11 +1,14 @@
 package com.fashionista.api.controllers;
 
+import com.fashionista.api.dtos.request.PurchaseRequest;
 import com.fashionista.api.entities.Review;
+import com.fashionista.api.exceptions.GenericException;
 import com.fashionista.api.services.FileStorageService;
 import com.fashionista.api.services.ProductService;
 import com.fashionista.api.services.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
@@ -64,4 +67,14 @@ public class ProductController {
         return productService.getProductsByName(name, pageable);
     }
 
+    @PostMapping(PRODUCT_GET_BY_TAG)
+    public ResponseEntity<?> getProductsByTag(@Valid @RequestBody PurchaseRequest purchaseRequest, BindingResult result, Pageable pageable) {
+        if (result.hasErrors()) {
+            validationService.validate(result);
+        }
+        if (purchaseRequest.getCart().size() < 1) {
+            throw new GenericException("Cart cannot be empty", HttpStatus.BAD_REQUEST);
+        }
+        return productService.getProductsByTags(purchaseRequest.getCart(), pageable);
+    }
 }

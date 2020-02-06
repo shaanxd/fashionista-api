@@ -75,7 +75,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         PRODUCT_ROOT.concat(PRODUCT_GET_REVIEWS),
                         TAG_ROOT.concat(TAG_SEARCH),
                         TAG_ROOT.concat(TAG_GET),
-                        TAG_ROOT.concat(TAG_GET_ALL)
+                        TAG_ROOT.concat(TAG_GET_ALL),
+                        PRODUCT_ROOT.concat(PRODUCT_GET_BY_TAG)
                 )
                 .permitAll()
                 .anyRequest()
