@@ -12,10 +12,16 @@ import javax.sql.DataSource;
 public class DatabaseConfig {
     @Value("${spring.datasource.url}")
     private String url;
+    @Value("${spring.datasource.username}")
+    private String username;
+    @Value("${spring.datasource.password}")
+    private String password;
 
     @Bean
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
+        config.setUsername(username);
+        config.setPassword(password);
         config.setJdbcUrl(url);
         return new HikariDataSource(config);
     }
