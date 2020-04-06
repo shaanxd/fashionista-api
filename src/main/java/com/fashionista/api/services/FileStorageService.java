@@ -1,56 +1,67 @@
 package com.fashionista.api.services;
 
+import com.fashionista.api.dtos.response.ImageErrorResponse;
+import com.fashionista.api.dtos.response.ImageResponse;
 import com.fashionista.api.exceptions.GenericException;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
+import com.fashionista.api.rest.ImgurService;
+import com.google.gson.Gson;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import retrofit2.Call;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
-import static org.springframework.http.HttpHeaders.CONTENT_DISPOSITION;
 
 @Service
 public class FileStorageService {
-    private final Path fileStorageLocation;
+    private ImgurService service;
 
-    public FileStorageService() {
-        this.fileStorageLocation = Paths.get(System.getProperty("user.dir") + "/uploads")
-                .toAbsolutePath()
-                .normalize();
-        try {
-            if (!Files.exists(fileStorageLocation)) {
-                Files.createDirectories(this.fileStorageLocation);
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
+    private String CLIENT_ID;
+
+    public FileStorageService(
+            @Value("${imgur.base.url}") String BASE_URL,
+            @Value("${imgur.client.id}") String CLIENT_ID
+    ) {
+        this. CLIENT_ID = CLIENT_ID;
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        service = retrofit.create(ImgurService.class);
     }
 
     String store(MultipartFile file) {
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
-        String uuid = UUID.randomUUID().toString();
-        String[] split = filename.split("\\.");
-        String uuidWithExt = uuid.concat("." + split[split.length - 1]);
         try {
-            Files.copy(file.getInputStream(), this.fileStorageLocation.resolve(uuidWithExt), StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            throw new GenericException("Error occurred while uploading images. Please try again.", HttpStatus.INTERNAL_SERVER_ERROR);
+            Call<ImageResponse> call = service.post(
+                    "Client-ID "+ CLIENT_ID,
+                    MultipartBody.Part.createFormData(
+                            "image",
+                            file.getName(),
+                            RequestBody.create(
+                                    MediaType.parse("image/*"),
+                                    file.getBytes()
+                            )
+                    ));
+
+            Response<ImageResponse> response = call.execute();
+
+            if (response.errorBody() != null || response.body() == null) {
+                throw new Exception("Image upload request failed. Please try again.");
+            }
+            return response.body().getData().getLink();
+        } catch (Exception e) {
+            throw new GenericException("Error occurred while uploading images to bucket.", HttpStatus.BAD_REQUEST);
         }
-        return uuidWithExt;
     }
 
     List<String> storeMultiple(MultipartFile[] files) {
@@ -61,35 +72,5 @@ public class FileStorageService {
         }
 
         return filenames;
-    }
-
-    public ResponseEntity<?> getImage(String filename, HttpServletRequest request) {
-        try {
-            Path filepath = this.fileStorageLocation.resolve(filename).normalize();
-            Resource resource = new UrlResource(filepath.toUri());
-
-            if (!resource.exists()) {
-                throw new GenericException("File not found.", HttpStatus.BAD_REQUEST);
-            }
-
-            String contentType = request
-                    .getServletContext()
-                    .getMimeType(resource.getFile().getAbsolutePath());
-
-            if (contentType == null) {
-                contentType = "application/octet-stream";
-            }
-
-            return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
-                    .header(CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename())
-                    .body(resource);
-
-        } catch (MalformedURLException ex) {
-            throw new GenericException("Error getting image from server.", HttpStatus.BAD_REQUEST);
-        } catch (IOException ex) {
-            throw new GenericException("Could not determine file type.", HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (GenericException ex) {
-            throw new GenericException(ex.getMessage(), ex.getStatus());
-        }
     }
 }
