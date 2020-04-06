@@ -24,13 +24,11 @@ import static com.fashionista.api.constants.RouteConstants.*;
 @CrossOrigin("*")
 public class ProductController {
     private ProductService productService;
-    private FileStorageService fileStorageService;
     private ValidationService validationService;
 
     @Autowired
-    public ProductController(ProductService productService, FileStorageService fileStorageService, ValidationService validationService) {
+    public ProductController(ProductService productService, ValidationService validationService) {
         this.productService = productService;
-        this.fileStorageService = fileStorageService;
         this.validationService = validationService;
     }
 
@@ -42,11 +40,6 @@ public class ProductController {
     @GetMapping(PRODUCTS_GET)
     public ResponseEntity<?> getProducts(Pageable pageable) {
         return productService.getProducts(pageable);
-    }
-
-    @GetMapping(PRODUCT_IMAGE_GET)
-    public ResponseEntity<?> getImage(@PathVariable String filename, HttpServletRequest request) {
-        return fileStorageService.getImage(filename, request);
     }
 
     @PostMapping(PRODUCT_ADD_REVIEW)
