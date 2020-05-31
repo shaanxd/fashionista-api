@@ -65,6 +65,10 @@ public class Product {
     @JsonIgnore
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Favourite> favourites = new ArrayList<>();
+
     @CreationTimestamp
     @JsonIgnore
     private Date createdAt;

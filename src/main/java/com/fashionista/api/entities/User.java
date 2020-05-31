@@ -56,6 +56,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Favourite> favourites = new ArrayList<>();
+
     @CreationTimestamp
     @JsonIgnore
     private Date createdAt;

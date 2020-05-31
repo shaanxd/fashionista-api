@@ -32,5 +32,9 @@ public class RouteConstants {
     public static final String TAG_SEARCH = "/search-tag/{name}";
     public static final String TAG_GET = "";
     public static final String TAG_GET_ALL = "/all";
-    public static final String TAG_IMAGE_GET = "/image/{filename}";
+
+    public static final String FAVOURITE_ROOT = "/api/favourites";
+    public static final String FAVOURITE_TOGGLE = "/toggle/{id}";
+    public static final String FAVOURITE_GET_ALL = "";
+    public static final String FAVOURITE_GET_PRODUCT = "/is-favourite/{id}";
 }
