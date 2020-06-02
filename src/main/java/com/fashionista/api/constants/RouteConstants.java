@@ -4,6 +4,7 @@ public class RouteConstants {
     public static final String ADMIN_ROOT = "/api/admin";
     public static final String ADMIN_CREATE_TAG = "/create-tag";
     public static final String ADMIN_CREATE_PRODUCT = "/create-product";
+    public static final String ADMIN_GET_ALL_INQUIRIES = "/all-inquiries";
 
     public static final String AUTH_ROOT = "/api/auth";
     public static final String AUTH_LOGIN = "/login";
@@ -13,10 +14,12 @@ public class RouteConstants {
     public static final String PRODUCTS_GET = "";
     public static final String PRODUCTS_SEARCH = "/search/{name}";
     public static final String PRODUCT_GET = "/product/{id}";
-    public static final String PRODUCT_IMAGE_GET = "/image/{filename}";
     public static final String PRODUCT_ADD_REVIEW = "/add-review/{id}";
     public static final String PRODUCT_GET_REVIEWS = "/reviews/{id}";
     public static final String PRODUCT_GET_BY_TAG = "/by-type";
+    public static final String PRODUCT_ADD_INQUIRY = "/add-inquiry/{id}";
+    public static final String PRODUCT_GET_INQUIRIES = "/inquiries/{id}";
+    public static final String PRODUCT_ADD_REPLY = "add-reply/{id}";
 
     public static final String CART_ROOT = "/api/cart";
     public static final String CART_GET = "";

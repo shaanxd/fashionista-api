@@ -21,6 +21,7 @@ public class ProductResponse {
     private List<String> images = new ArrayList<>();
     private List<TagResponse> tags = new ArrayList<>();
     private ReviewListResponse reviews;
+    private InquiryListResponse inquiries;
     private Integer oneStars = null;
     private Integer twoStars = null;
     private Integer threeStars = null;
@@ -38,10 +39,12 @@ public class ProductResponse {
         this.avgRating = avgRating;
         this.images = null;
         this.tags = null;
+        this.reviews = null;
+        this.inquiries = null;
     }
 
     private ProductResponse(String id, String name, String description, int stock, double price, String thumbnail,
-                            double avgRating, List<String> images, List<ProductTag> productTags, ReviewListResponse reviews,
+                            double avgRating, List<String> images, List<ProductTag> productTags, ReviewListResponse reviews, InquiryListResponse inquiries,
                             int oneStars, int twoStars, int threeStars, int fourStars, int fiveStars, int totalStars) {
         this.id = id;
         this.name = name;
@@ -58,6 +61,7 @@ public class ProductResponse {
             );
         }
         this.reviews = reviews;
+        this.inquiries = inquiries;
         this.oneStars = oneStars;
         this.twoStars = twoStars;
         this.threeStars = threeStars;
@@ -78,7 +82,7 @@ public class ProductResponse {
         );
     }
 
-    public static ProductResponse transformWithAll(Product product, ReviewListResponse reviews) {
+    public static ProductResponse transformWithAll(Product product, ReviewListResponse reviews, InquiryListResponse inquiries) {
         return new ProductResponse(
                 product.getId(),
                 product.getName(),
@@ -90,6 +94,7 @@ public class ProductResponse {
                 product.retrieveImagesArray(),
                 product.getProductTags(),
                 reviews,
+                inquiries,
                 product.getOneRating(),
                 product.getTwoRating(),
                 product.getThreeRating(),
