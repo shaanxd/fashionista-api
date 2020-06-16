@@ -32,16 +32,16 @@ public class Product {
     @Formula("(SELECT IFNULL((SELECT AVG(r.rating) FROM Review r WHERE id = r.product_id), 0))")
     private double avgRating = 0.0;
 
-    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating = 1), 0))")
+    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating BETWEEN 0 AND 1.9), 0))")
     private int oneRating = 0;
 
-    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating = 2), 0))")
+    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating BETWEEN 2 AND 2.9), 0))")
     private int twoRating = 0;
 
-    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating = 3), 0))")
+    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating BETWEEN 3 AND 3.9), 0))")
     private int threeRating = 0;
 
-    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating = 4), 0))")
+    @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating BETWEEN 4 and 4.9), 0))")
     private int fourRating = 0;
 
     @Formula("(SELECT IFNULL((SELECT COUNT(*) FROM Review r WHERE id = r.product_id AND r.rating = 5), 0))")

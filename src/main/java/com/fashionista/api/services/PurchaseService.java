@@ -1,5 +1,6 @@
 package com.fashionista.api.services;
 
+import com.fashionista.api.dtos.request.PurchaseRequest;
 import com.fashionista.api.dtos.response.PurchaseListResponse;
 import com.fashionista.api.dtos.response.PurchaseResponse;
 import com.fashionista.api.entities.*;
@@ -32,7 +33,9 @@ public class PurchaseService {
     }
 
     @Transactional
-    public ResponseEntity<?> purchaseOrders(List<String> ids, User user) {
+    public ResponseEntity<?> purchaseOrders(PurchaseRequest request, User user) {
+        List<String> ids = request.getCart();
+
         if (user == null) {
             throw new GenericException("User not found.", HttpStatus.UNAUTHORIZED);
         }
@@ -41,7 +44,15 @@ public class PurchaseService {
             throw new GenericException("Cart doesn't contain items.", HttpStatus.BAD_REQUEST);
         }
         double total = 0.0;
-        Purchase purchase = purchaseRepository.save(new Purchase(total, user));
+        Purchase purchase = purchaseRepository.save(new Purchase(
+                        total, user,
+                        request.getName(),
+                        request.getAddress(),
+                        request.getCity(),
+                        request.getCountry(),
+                        request.getPaymentMethod()
+                )
+        );
         List<PurchaseItem> purchases = new ArrayList<>();
 
         for (Cart item : cart) {
@@ -95,7 +106,12 @@ public class PurchaseService {
                         purchase.getTotalPrice(),
                         purchase.getItems().size(),
                         purchase.getUpdatedAt(),
-                        purchase.getItems()
+                        purchase.getItems(),
+                        purchase.getName(),
+                        purchase.getAddress(),
+                        purchase.getCity(),
+                        purchase.getCountry(),
+                        purchase.getPaymentMethod()
                 )
         );
     }

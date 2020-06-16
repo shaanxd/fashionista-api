@@ -32,7 +32,7 @@ public class PurchaseController {
         if (result.hasErrors()) {
             validationService.validate(result);
         }
-        return purchaseService.purchaseOrders(purchaseRequest.getCart(), validationService.validateUser(authentication));
+        return purchaseService.purchaseOrders(purchaseRequest, validationService.validateUser(authentication));
     }
 
     @GetMapping(PURCHASES_GET)

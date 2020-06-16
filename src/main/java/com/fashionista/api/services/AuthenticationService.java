@@ -51,6 +51,7 @@ public class AuthenticationService {
                 token,
                 user.getId(),
                 user.getFullName(),
+                user.getEmail(),
                 user.getRole(),
                 VALID_DURATION / 1000
         ));
@@ -67,6 +68,7 @@ public class AuthenticationService {
                 token,
                 user.getId(),
                 user.getFullName(),
+                user.getEmail(),
                 user.getRole(),
                 VALID_DURATION / 1000
         ));

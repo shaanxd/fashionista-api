@@ -18,11 +18,7 @@ public class InquiryListResponse {
         this.total = (total == 0) ? total : total - 1;
         this.current = current;
         for (Inquiry inquiry : inquiries) {
-            if (isAdmin) {
-                this.inquiries.add(InquiryResponse.transformToDtoWithProduct(inquiry));
-            } else {
-                this.inquiries.add(InquiryResponse.transformToDto(inquiry));
-            }
+            this.inquiries.add(InquiryResponse.transformToDtoWithProduct(inquiry));
         }
     }
 }

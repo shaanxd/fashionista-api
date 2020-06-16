@@ -29,6 +29,12 @@ public class Purchase {
     @JsonIgnore
     private User user;
 
+    private String name;
+    private String address;
+    private String city;
+    private String country;
+    private String paymentMethod;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "purchase", cascade = CascadeType.ALL)
     private List<PurchaseItem> items = new ArrayList<>();
 
@@ -40,8 +46,13 @@ public class Purchase {
     @JsonIgnore
     private Date updatedAt;
 
-    public Purchase(double totalPrice, User user) {
+    public Purchase(double totalPrice, User user, String name, String address, String city, String country, String paymentMethod) {
         this.totalPrice = totalPrice;
         this.user = user;
+        this.name = name;
+        this.address = address;
+        this.city = city;
+        this.country = country;
+        this.paymentMethod = paymentMethod;
     }
 }

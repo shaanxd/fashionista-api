@@ -1,6 +1,6 @@
 package com.fashionista.api.controllers;
 
-import com.fashionista.api.dtos.request.PurchaseRequest;
+import com.fashionista.api.dtos.request.ProductTagRequest;
 import com.fashionista.api.entities.Inquiry;
 import com.fashionista.api.entities.Reply;
 import com.fashionista.api.entities.Review;
@@ -61,7 +61,7 @@ public class ProductController {
     }
 
     @PostMapping(PRODUCT_GET_BY_TAG)
-    public ResponseEntity<?> getProductsByTag(@Valid @RequestBody PurchaseRequest purchaseRequest, BindingResult result, Pageable pageable) {
+    public ResponseEntity<?> getProductsByTag(@Valid @RequestBody ProductTagRequest purchaseRequest, BindingResult result, Pageable pageable) {
         if (result.hasErrors()) {
             validationService.validate(result);
         }

@@ -16,6 +16,11 @@ public class PurchaseResponse {
     private int numberOfItems = 0;
     private Date orderedAt;
     private List<CartItemResponse> purchases = new ArrayList<>();
+    private String name;
+    private String address;
+    private String city;
+    private String country;
+    private String paymentMethod;
 
     public PurchaseResponse(String id, double totalPrice, int numberOfItems, Date orderedAt) {
         this.id = id;
@@ -25,7 +30,9 @@ public class PurchaseResponse {
         this.purchases = null;
     }
 
-    public PurchaseResponse(String id, double totalPrice, int numberOfItems, Date orderedAt, List<PurchaseItem> purchasesList) {
+    public PurchaseResponse(String id, double totalPrice, int numberOfItems, Date orderedAt,
+                            List<PurchaseItem> purchasesList, String name, String address, String city, String country,
+                            String paymentMethod) {
         this.id = id;
         this.totalPrice = totalPrice;
         this.numberOfItems = numberOfItems;
@@ -33,5 +40,9 @@ public class PurchaseResponse {
         for (PurchaseItem purchase : purchasesList) {
             this.purchases.add(CartItemResponse.transformToDto(purchase));
         }
+        this.name = name;
+        this.address = address;
+        this.city = city;
+        this.country = country;
     }
 }

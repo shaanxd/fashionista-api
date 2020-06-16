@@ -26,7 +26,12 @@ public class PurchaseListResponse {
                             purchase.getTotalPrice(),
                             purchaseItems.size(),
                             purchase.getUpdatedAt(),
-                            purchaseItems
+                            purchaseItems,
+                            purchase.getName(),
+                            purchase.getAddress(),
+                            purchase.getCity(),
+                            purchase.getCountry(),
+                            purchase.getPaymentMethod()
                     )
             );
         }

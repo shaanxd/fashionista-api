@@ -11,6 +11,7 @@ public class AuthenticationResponse {
     private String token;
     private String id;
     private String name;
+    private String email;
     private String role;
     private long expirationInSeconds;
 }

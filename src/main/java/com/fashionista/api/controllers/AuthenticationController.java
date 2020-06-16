@@ -41,4 +41,5 @@ public class AuthenticationController {
         }
         return authenticationService.authenticateUser(request.getEmail(), request.getPassword());
     }
+
 }
